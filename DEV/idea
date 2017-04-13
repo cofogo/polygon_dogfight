@@ -1,0 +1,52 @@
+GAMEPLAY
+========
+Two 2d space fighters duke it out.
+
+FEATURES
+========
+v1.0 (consider complete, can move on)
+-------------------------------------
+2 players
+Power-ups (health, fire rate, damage)
+Primary weapon (pixel cannon)
+
+v1.1
+----
+
+v1.2
+----
+
+v1.3
+-----
+
+v1.4
+----
+
+v1.5
+----
+
+
+DECIDE SCOPE
+============
+secondary weapon (slightly homming missle)
+particle effects (main engine, secondary weapon)
+singularity in the middle (main gravity well)
+a planets system orbiting the singularity
+planets are randomised for each fight
+planets now have gravity
+animations for the singularity
+
+OUT OF SCOPE FOR v1.x
+=====================
+AI
+Dockable space station (repairs, etc)
+Fuel, ammo
+
+
+WHAT I AIM TO LEARN
+===================
+Drawing shapes
+Rotating shapes
+Particle systems
+Gravity physics
+Dynamic entity trait modification (power-ups)
