@@ -29,5 +29,5 @@
 *.app
 
 # Backup and swap files
-#.*.swp
-#*~
+.*.swp
+*~
