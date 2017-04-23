@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+
+# Backup and swap files
+#.*.swp
+#*~

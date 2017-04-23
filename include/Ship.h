@@ -10,12 +10,12 @@ public:
 	~Ship();
 
 //	void rotate();
-//	void accel();
-//	void update();
+	void accel(const Vec2& _v);
+	void update(const SDL_Rect& _borders);
 	void render(SDL_Renderer* _ren);
 private:
 	vector<Vec2> m_shape;
 	Vec2 m_pos;
 	Vec2 m_spd;
-	float m_dir;
+	Vec2 m_dir;
 };
