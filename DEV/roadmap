@@ -1,8 +1,9 @@
 - [x] barebones engine
 - [x] draw polygon ship
 - [x] move polygon ship
+- [x] rotate polygon ship
+- [x] move polygon ship in relation to facing diraction
 - [ ] try overloading some operators for Vec2 operations
 - [ ] use delta time as a point of reference for update phase
-- [ ] rotate polygon ship
 - [ ] teach the ship to shoot
 - [ ] make something to shoot at

@@ -28,10 +28,11 @@ using utils::Vec2;
 
 const int win_w = 800;
 const int win_h = 640;
+const string win_title = "polygon dogfight";
 
 int init(); //initialise SDL
 int create_main_win(SDL_Window*& _win, SDL_Surface*& _srf,
-                    const int _w, const int _h);
+                    const string& _title, const int _w, const int _h);
 int create_win_renderer(SDL_Window* _win, SDL_Renderer*& _ren);
 void close(SDL_Window*& _win, SDL_Renderer*& _ren);
 void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h);
@@ -49,7 +50,7 @@ int main(int argc, char* args[])
     SDL_Surface* srf_main = NULL;
     SDL_Renderer* ren_main = NULL;
     
-    if(create_main_win(win_main, srf_main, win_w, win_h) != 0) {
+    if(create_main_win(win_main, srf_main, win_title, win_w, win_h) != 0) {
         close(win_main, ren_main);
         return 1;
     }
@@ -90,9 +91,9 @@ int init()
 }
 
 int create_main_win(SDL_Window*& _win, SDL_Surface*& _srf,
-                                        const int _w, const int _h)
+                    const string& _title, const int _w, const int _h)
 {
-    _win = SDL_CreateWindow("breakout42",
+    _win = SDL_CreateWindow(_title.c_str(),
                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                             _w, _h,
                              SDL_WINDOW_SHOWN);
@@ -177,16 +178,16 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                 }
 
                 if(key_states[SDL_SCANCODE_UP]) {
-                    ship.accel(Vec2{0.0f, -0.1f});
+                    ship.accel();
                 }
                 if(key_states[SDL_SCANCODE_DOWN]) {
-                    ship.accel(Vec2{0.0f, 0.1f});
+                    ship.accel(-1.0f);
                 }
                 if(key_states[SDL_SCANCODE_LEFT]) {
-                    ship.accel(Vec2{-0.1f, 0.0f});
+                    ship.rotate(-1.0f);
                 }
                 if(key_states[SDL_SCANCODE_RIGHT]) {
-                    ship.accel(Vec2{0.1f, 0.0f});
+                    ship.rotate();
                 }
             }
             else if(event.type == SDL_QUIT) {
