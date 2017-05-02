@@ -31,3 +31,6 @@
 # Backup and swap files
 .*.swp
 *~
+
+# Executable
+polyfight
