@@ -31,7 +31,7 @@ const int win_h = 640;
 const string win_title = "polygon dogfight";
 
 int init(); //initialise SDL
-int create_main_win(SDL_Window*& _win, SDL_Surface*& _srf,
+int create_main_win(SDL_Window*& _win,
                     const string& _title, const int _w, const int _h);
 int create_win_renderer(SDL_Window* _win, SDL_Renderer*& _ren);
 void close(SDL_Window*& _win, SDL_Renderer*& _ren);
@@ -47,10 +47,9 @@ int main(int argc, char* args[])
     }
     
     SDL_Window* win_main = NULL;
-    SDL_Surface* srf_main = NULL;
     SDL_Renderer* ren_main = NULL;
     
-    if(create_main_win(win_main, srf_main, win_title, win_w, win_h) != 0) {
+    if(create_main_win(win_main, win_title, win_w, win_h) != 0) {
         close(win_main, ren_main);
         return 1;
     }
@@ -90,8 +89,8 @@ int init()
     return 0;
 }
 
-int create_main_win(SDL_Window*& _win, SDL_Surface*& _srf,
-                    const string& _title, const int _w, const int _h)
+int create_main_win(SDL_Window*& _win,
+        const string& _title, const int _w, const int _h)
 {
     _win = SDL_CreateWindow(_title.c_str(),
                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -102,8 +101,6 @@ int create_main_win(SDL_Window*& _win, SDL_Surface*& _srf,
         cerr << "SDL error = " << SDL_GetError() << endl;
         return 1;
     }
-    
-    _srf = SDL_GetWindowSurface(_win);
     
     return 0;
 }
@@ -177,25 +174,15 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                     else {pause = true;}
                 }
 
-                if(key_states[SDL_SCANCODE_UP]) {
-                    ship.accel();
-                }
-                if(key_states[SDL_SCANCODE_DOWN]) {
-                    ship.accel(-1.0f);
-                }
-                if(key_states[SDL_SCANCODE_LEFT]) {
-                    ship.rotate(-1.0f);
-                }
-                if(key_states[SDL_SCANCODE_RIGHT]) {
-                    ship.rotate();
-                }
             }
-            else if(event.type == SDL_QUIT) {
-                flag_quit = true;
-            }
+            else if(event.type == SDL_QUIT) {flag_quit = true;}
         }
+        //continuous response key check
+        if(key_states[SDL_SCANCODE_DOWN]) {ship.accel(1.0f);}
+        if(key_states[SDL_SCANCODE_LEFT]) {ship.rotate(-1.0f);}
+        if(key_states[SDL_SCANCODE_RIGHT]) {ship.rotate(1.0f);}
 
-        if(pause) {SDL_Delay(33); continue;}
+        if(pause) {SDL_Delay(tgt_frame_len); continue;}
 
         ship.update(scene_rect);
 
@@ -218,15 +205,6 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         }
 
         ship.render(_ren);
-//      SDL_SetRenderDrawColor(_ren, 0x00, 0x00, 0xFF, 0x00);
-//      cir.r = 100;
-//      cir.x = 150;
-//      draw_poly(p_cir, 52, _ren);
-//      cir.x = 400;
-//      draw_circle(p_cir, _ren);
-//      cir.x = 650;
-//      cir.r = 50;
-//      draw_poly(p_cir, 6, _ren);
 
         SDL_RenderPresent(_ren);
 
@@ -240,30 +218,5 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                 frame_len += wait_len;
             }
         }
-    }
-}
-
-void draw_circle(utils::Circle* _cir, SDL_Renderer* _ren) {
-    double pi2 = acos(-1) * 2;
-    double c_px = _cir->r * pi2; //circumference in pixels, draw this many times
-    double itr_amt = (pi2) / c_px;
-    unsigned times = 0;
-    //pi2 == full circle in radians
-    for(double i = 0; i < pi2; i += itr_amt) {
-        SDL_RenderDrawPoint(_ren, _cir->x + (sin(i) * _cir->r), _cir->y + (cos(i) * _cir->r));  
-        ++times;
-    }
-}
-
-void draw_poly(utils::Circle* _cir, unsigned _fcs, SDL_Renderer* _ren) {
-    double pi2 = acos(-1) * 2;
-    double itr_amt = (pi2) / _fcs;
-    unsigned times = 0;
-    for(double i = itr_amt/2; i < pi2; i += itr_amt) {
-        SDL_RenderDrawLine(_ren, _cir->x + (sin(i) * _cir->r),
-                           _cir->y + (cos(i) * _cir->r),
-                           _cir->x + (sin(i + itr_amt) * _cir->r),
-                           _cir->y + (cos(i + itr_amt) * _cir->r));
-        ++times;
     }
 }

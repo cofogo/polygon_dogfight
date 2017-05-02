@@ -24,10 +24,17 @@ struct Circle {
 
 struct Vec2 {
 	float x, y;
+
+    Vec2 operator+=(const Vec2& _v)
+    {
+        this->x += _v.x;
+        this->y += _v.y;
+        return *this;
+    }
 };
 
 SDL_Texture* load_txt_texture(string _s,
              TTF_Font* _font, SDL_Colour _col,
              SDL_Renderer* _ren);
 }
-#endif
+#endif //UTILS_H

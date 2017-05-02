@@ -56,9 +56,9 @@ void Ship::rotate(float _perc) //_perc defaults to 1
 
 void Ship::update(const SDL_Rect& _borders)
 {
-    m_pos.x += m_spd.x;
-    m_pos.y += m_spd.y;
+    m_pos += m_spd;
 
+    //teleport if escaping scene
     if(m_pos.x < 0) {m_pos.x += _borders.w;}
     else if(m_pos.x > _borders.w) {m_pos.x -= _borders.w;}
     if(m_pos.y < 0) {m_pos.y += _borders.h;}

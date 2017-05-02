@@ -18,3 +18,12 @@ Project time: 3h (0d. 03:06:11)
 Session time: 04:01:32
 Project time: 7h (0d. 07:11:02)
 
+[NEW SESSION] : 2017-05-02[17:26:48]Tuesday
+[18:39:24] moved acceleration and rotation controls
+to continuous response mode, to have good responsiveness.
+[18:41:00] removed non-hardware-accelerated code.
+[19:21:54] overloaded Vec2 operators
+[END OF SESSION] : 2017-05-02[19:22:13]Tuesday
+Session time: 01:55:25
+Project time: 9h (0d. 09:06:27)
+

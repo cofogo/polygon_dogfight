@@ -1,3 +1,6 @@
+#ifndef SHIP_H
+#define SHIP_H
+
 #include <vector>
 using std::vector;
 #include <cmath>
@@ -18,6 +21,8 @@ public:
 	void accel(float _perc = 1.0f);
 	void update(const SDL_Rect& _borders);
 	void render(SDL_Renderer* _ren);
+    //void fire1();
+    //void fire2();
 private:
 	vector<Vec2> m_shape;
 	Vec2 m_pos;
@@ -27,3 +32,4 @@ private:
     float m_turn_spd;
     float m_accel;
 };
+#endif //SHIP_H
