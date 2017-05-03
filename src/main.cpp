@@ -25,6 +25,7 @@ using utils::Vec2;
 #include "Object.h"
 #include "Text_Object.h"
 #include "Ship.h"
+#include "Bullet.h"
 
 const int win_w = 800;
 const int win_h = 640;
@@ -38,6 +39,7 @@ void close(SDL_Window*& _win, SDL_Renderer*& _ren);
 void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h);
 void draw_circle(utils::Circle* _cir, SDL_Renderer* _ren);
 void draw_poly(utils::Circle* _cir, unsigned _fcs, SDL_Renderer* _ren);
+void smart_del_vector(vector<Bullet*>& _v, unsigned _pos);
 
 int main(int argc, char* args[])
 {
@@ -149,6 +151,8 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                         SDL_Rect{5, 5});
 
     Ship ship = Ship(Vec2{400.0f, 400.0f});
+    //TODO clear bullets array from expired (NULL) objects
+    vector<Bullet*> bullets;
     utils::Circle cir = utils::Circle {400, 300, 100};
     utils::Circle* p_cir = &cir;
 
@@ -173,6 +177,9 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                     if(pause) {pause = false;}
                     else {pause = true;}
                 }
+                if(key_states[SDL_SCANCODE_UP]) {
+                    bullets.push_back(ship.fire1());
+                }
 
             }
             else if(event.type == SDL_QUIT) {flag_quit = true;}
@@ -185,6 +192,16 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         if(pause) {SDL_Delay(tgt_frame_len); continue;}
 
         ship.update(scene_rect);
+
+        for(unsigned i = 0; i < bullets.size(); ++i) {
+            if(bullets[i]->has_expired()) {
+                smart_del_vector(bullets, i);
+                cerr << "vec size: " << bullets.size() << endl;
+                continue;
+            }
+
+            bullets[i]->update();
+        }
 
         if(show_fps) {
             if(frame_len > 0) {
@@ -206,6 +223,16 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
 
         ship.render(_ren);
 
+        for(unsigned i = 0; i < bullets.size(); ++i) {
+            if(bullets[i]->has_expired()) {
+                smart_del_vector(bullets, i);
+                cerr << "vec size: " << bullets.size() << endl;
+                continue;
+            }
+
+            bullets[i]->render(_ren);
+        }
+
         SDL_RenderPresent(_ren);
 
         //limit framerate
@@ -219,4 +246,19 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
             }
         }
     }
+}
+
+void smart_del_vector(vector<Bullet*>& _v, unsigned _pos)
+{
+    delete _v[_pos];
+    _v.shrink_to_fit();
+/*
+    if(_pos = _v.size() - 1) {
+        _v.pop_back();
+       return;
+    }
+*/
+    //_v[_pos] = _v.back();
+    //_v.back() = NULL;
+   // _v.pop_back();
 }

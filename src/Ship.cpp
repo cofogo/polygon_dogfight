@@ -2,11 +2,11 @@
 
 Ship::Ship(Vec2 _pos)
 : m_pos(_pos)
-, m_spd(Vec2{0.0f, 0.0f})
-, m_dir(Vec2{0.0f, 0.0f})
+, m_trans(Vec2{0.0f, 0.0f})
 , m_rot(0)
 , m_turn_spd(0.1f)
 , m_accel(0.1f)
+, m_weapon1_vel(0.15f)
 {
     m_shape.push_back(Vec2{0.0f, 15.0f});
     m_shape.push_back(Vec2{-10.0f, -10.0f});
@@ -34,8 +34,8 @@ void Ship::render(SDL_Renderer* _ren)
 
 void Ship::accel(float _perc) //_perc defaults to 1
 {
-    m_spd.x += m_accel * sin(m_rot) * _perc;
-    m_spd.y += m_accel * cos(m_rot) * _perc;
+    m_trans.x += m_accel * sin(m_rot) * _perc;
+    m_trans.y += m_accel * cos(m_rot) * _perc;
 }
 
 void Ship::rotate(float _perc) //_perc defaults to 1
@@ -56,11 +56,20 @@ void Ship::rotate(float _perc) //_perc defaults to 1
 
 void Ship::update(const SDL_Rect& _borders)
 {
-    m_pos += m_spd;
+    m_pos += m_trans;
 
-    //teleport if escaping scene
+    //teleport to opposite edge if escaping scene
     if(m_pos.x < 0) {m_pos.x += _borders.w;}
     else if(m_pos.x > _borders.w) {m_pos.x -= _borders.w;}
     if(m_pos.y < 0) {m_pos.y += _borders.h;}
     else if(m_pos.y > _borders.h) {m_pos.y -= _borders.h;}
+}
+
+Bullet* Ship::fire1()
+{
+    //TODO add weapon cooldown timer
+    //TODO use smart pointer
+    return new Bullet(m_pos,
+            m_trans.x + m_trans.y + m_weapon1_vel,
+            m_rot); //TODO add forward point position to pos
 }

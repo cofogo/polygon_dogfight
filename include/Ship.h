@@ -12,6 +12,8 @@ using std::sqrt;
 #include "utils.h"
 using utils::Vec2;
 
+#include "Bullet.h"
+
 class Ship {
 public:
 	Ship(Vec2 _pos);
@@ -21,15 +23,15 @@ public:
 	void accel(float _perc = 1.0f);
 	void update(const SDL_Rect& _borders);
 	void render(SDL_Renderer* _ren);
-    //void fire1();
+    Bullet* fire1();
     //void fire2();
 private:
 	vector<Vec2> m_shape;
 	Vec2 m_pos;
-	Vec2 m_spd;
-	Vec2 m_dir;
+	Vec2 m_trans;
     float m_rot;
     float m_turn_spd;
     float m_accel;
+    float m_weapon1_vel;
 };
 #endif //SHIP_H
