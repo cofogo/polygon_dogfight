@@ -39,7 +39,7 @@ void close(SDL_Window*& _win, SDL_Renderer*& _ren);
 void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h);
 void draw_circle(utils::Circle* _cir, SDL_Renderer* _ren);
 void draw_poly(utils::Circle* _cir, unsigned _fcs, SDL_Renderer* _ren);
-void smart_del_vector(vector<Bullet*>& _v, unsigned _pos);
+void smart_del_vector(vector<auto*>& _v, unsigned _pos);
 
 int main(int argc, char* args[])
 {
@@ -196,7 +196,7 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         for(unsigned i = 0; i < bullets.size(); ++i) {
             if(bullets[i]->has_expired()) {
                 smart_del_vector(bullets, i);
-                cerr << "vec size: " << bullets.size() << endl;
+                --i;
                 continue;
             }
 
@@ -224,12 +224,6 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         ship.render(_ren);
 
         for(unsigned i = 0; i < bullets.size(); ++i) {
-            if(bullets[i]->has_expired()) {
-                smart_del_vector(bullets, i);
-                cerr << "vec size: " << bullets.size() << endl;
-                continue;
-            }
-
             bullets[i]->render(_ren);
         }
 
@@ -248,17 +242,9 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
     }
 }
 
-void smart_del_vector(vector<Bullet*>& _v, unsigned _pos)
+void smart_del_vector(vector<auto*>& _v, unsigned _pos)
 {
     delete _v[_pos];
-    _v.shrink_to_fit();
-/*
-    if(_pos = _v.size() - 1) {
-        _v.pop_back();
-       return;
-    }
-*/
-    //_v[_pos] = _v.back();
-    //_v.back() = NULL;
-   // _v.pop_back();
+    if(_pos < _v.size() - 1) {_v[_pos] = _v.back();}
+    _v.pop_back();
 }
