@@ -19,9 +19,9 @@ public:
 	Ship(Vec2 _pos);
 	~Ship();
 
-	void rotate(float _perc = 1.0f);
-	void accel(float _perc = 1.0f);
-	void update(const SDL_Rect& _borders);
+	void rotate(float _t, float _perc = 1.0f);
+	void accel(float _t, float _perc = 1.0f);
+	void update(float _t, const SDL_Rect& _borders);
 	void render(SDL_Renderer* _ren);
     Bullet* fire1();
     //void fire2();
@@ -30,8 +30,8 @@ private:
 	Vec2 m_pos;
 	Vec2 m_trans;
     float m_rot;
-    float m_turn_spd;
-    float m_accel;
+    float m_turn_spd; // rad/s
+    float m_accel; // pixels/s
     float m_weapon1_vel;
 };
 #endif //SHIP_H

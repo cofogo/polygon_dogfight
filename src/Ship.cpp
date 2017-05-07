@@ -4,8 +4,8 @@ Ship::Ship(Vec2 _pos)
 : m_pos(_pos)
 , m_trans(Vec2{0.0f, 0.0f})
 , m_rot(0)
-, m_turn_spd(0.1f)
-, m_accel(0.1f)
+, m_turn_spd(6.0f)
+, m_accel(400.0f)
 , m_weapon1_vel(0.15f)
 {
     m_shape.push_back(Vec2{0.0f, 15.0f});
@@ -32,17 +32,18 @@ void Ship::render(SDL_Renderer* _ren)
                       , m_shape.front().y + m_pos.y);
 }
 
-void Ship::accel(float _perc) //_perc defaults to 1
+void Ship::accel(float _t, float _perc) //_perc defaults to 1
 {
-    m_trans.x += m_accel * sin(m_rot) * _perc;
-    m_trans.y += m_accel * cos(m_rot) * _perc;
+    m_trans.x += m_accel * _t * sin(m_rot) * _perc;
+    m_trans.y += m_accel * _t * cos(m_rot) * _perc;
 }
 
-void Ship::rotate(float _perc) //_perc defaults to 1
+void Ship::rotate(float _t, float _perc) //_perc defaults to 1
 {
-    float turn_val = m_turn_spd * _perc;
+    float turn_val = m_turn_spd * _t * _perc;
     m_rot -= turn_val; //clockwise is negative, as per standard
 
+    //rotate the shape matrix
     for(unsigned i = 0; i < m_shape.size(); ++i) {
         float new_x = (m_shape[i].x * cos(turn_val))
                 - (m_shape[i].y * sin(turn_val));
@@ -54,9 +55,9 @@ void Ship::rotate(float _perc) //_perc defaults to 1
     }
 }
 
-void Ship::update(const SDL_Rect& _borders)
+void Ship::update(float _t, const SDL_Rect& _borders)
 {
-    m_pos += m_trans;
+    m_pos += m_trans * _t;
 
     //teleport to opposite edge if escaping scene
     if(m_pos.x < 0) {m_pos.x += _borders.w;}

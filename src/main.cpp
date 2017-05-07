@@ -162,6 +162,7 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
     while(flag_quit == false) {
         SDL_SetRenderDrawColor(_ren, 0xFF, 0xF0, 0xF0, 0x00);
         loop_timer.set_start(SDL_GetTicks());
+        float dt = float(frame_len) / 1000.0f;
         
         //input and update phase
         SDL_Event event;
@@ -180,18 +181,17 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                 if(key_states[SDL_SCANCODE_UP]) {
                     bullets.push_back(ship.fire1());
                 }
-
             }
             else if(event.type == SDL_QUIT) {flag_quit = true;}
         }
         //continuous response key check
-        if(key_states[SDL_SCANCODE_DOWN]) {ship.accel(1.0f);}
-        if(key_states[SDL_SCANCODE_LEFT]) {ship.rotate(-1.0f);}
-        if(key_states[SDL_SCANCODE_RIGHT]) {ship.rotate(1.0f);}
+        if(key_states[SDL_SCANCODE_DOWN]) {ship.accel(dt, 1.0f);}
+        if(key_states[SDL_SCANCODE_LEFT]) {ship.rotate(dt, -1.0f);}
+        if(key_states[SDL_SCANCODE_RIGHT]) {ship.rotate(dt, 1.0f);}
 
         if(pause) {SDL_Delay(tgt_frame_len); continue;}
 
-        ship.update(scene_rect);
+        ship.update(dt, scene_rect);
 
         for(unsigned i = 0; i < bullets.size(); ++i) {
             if(bullets[i]->has_expired()) {

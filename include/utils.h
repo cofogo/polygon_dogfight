@@ -31,6 +31,11 @@ struct Vec2 {
         this->y += _v.y;
         return *this;
     }
+
+    Vec2 operator*(const float _f)
+    {
+        return Vec2{this->x * _f, this->y * _f};
+    }
 };
 
 SDL_Texture* load_txt_texture(string _s,
