@@ -16,6 +16,7 @@ public:
     void render(SDL_Renderer* _ren);
     void update(float _t);
     bool has_expired();
+    Vec2 get_pos();
 private:
     Vec2 m_pos;
     Vec2 m_trans;

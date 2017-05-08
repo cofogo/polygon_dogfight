@@ -21,3 +21,5 @@ void Bullet::update(float _t)
 }
 
 bool Bullet::has_expired() { return (m_age > m_max_age); }
+
+Vec2 Bullet::get_pos() { return m_pos; }

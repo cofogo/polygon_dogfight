@@ -40,6 +40,7 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h);
 void draw_circle(utils::Circle* _cir, SDL_Renderer* _ren);
 void draw_poly(utils::Circle* _cir, unsigned _fcs, SDL_Renderer* _ren);
 void smart_del_vector(vector<auto*>& _v, unsigned _pos);
+bool detect_coll_pt_cir(Vec2 _pos1, Vec2 _pos2, unsigned _r2);
 
 int main(int argc, char* args[])
 {
@@ -192,6 +193,9 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         if(pause) {SDL_Delay(tgt_frame_len); continue;}
 
         ship.update(dt, scene_rect);
+        //get info for collision detection
+        Vec2 ship_pos = ship.get_pos();
+        unsigned ship_coll_r = ship.get_coll_rad();
 
         for(unsigned i = 0; i < bullets.size(); ++i) {
             if(bullets[i]->has_expired()) {
@@ -201,6 +205,11 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
             }
 
             bullets[i]->update(dt);
+            if(detect_coll_pt_cir(bullets[i]->get_pos(),
+                    ship_pos, ship_coll_r)
+            ) {
+                pause = true;
+            }
         }
 
         if(show_fps) {
@@ -247,4 +256,18 @@ void smart_del_vector(vector<auto*>& _v, unsigned _pos)
     delete _v[_pos];
     if(_pos < _v.size() - 1) {_v[_pos] = _v.back();}
     _v.pop_back();
+}
+
+bool detect_coll_pt_cir(Vec2 _pos1, Vec2 _pos2, unsigned _r2)
+{
+    //pythagorean theorem
+    Vec2 dist_v = Vec2{fabs(_pos1.x - _pos2.x), fabs(_pos1.y - _pos2.y)};
+    float dist = sqrtf(powf(dist_v.x, 2) + powf(dist_v.y, 2));
+
+    cerr << "dist: " << dist << endl;
+    if(dist <= _r2) {
+        return true;
+    }
+
+    return false;
 }

@@ -26,13 +26,16 @@ public:
 	void render(SDL_Renderer* _ren);
     Bullet* fire1();
     //void fire2();
+    Vec2 get_pos();
+    unsigned get_coll_rad();
 private:
 	vector<Vec2> m_shape;
 	Vec2 m_pos;
 	Vec2 m_trans;
-    float m_rot;
+    float m_rot; //radians
     float m_turn_spd; // rad/s
     float m_accel; // pixels/s
-    float m_weapon1_vel;
+    float m_weapon1_vel; // pixels/s
+    unsigned m_coll_radius; // pixels
 };
 #endif //SHIP_H
