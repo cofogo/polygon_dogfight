@@ -25,6 +25,11 @@ struct Circle {
 struct Vec2 {
 	float x, y;
 
+    Vec2 operator+(const Vec2 _v)
+    {
+        return Vec2{this->x + _v.x, this->y + _v.y};
+    }
+
     Vec2 operator+=(const Vec2& _v)
     {
         this->x += _v.x;

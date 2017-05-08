@@ -10,6 +10,7 @@ v1.0
 - [x] move polygon ship in relation to facing diraction
 - [x] try overloading some operators for Vec2 operations
 - [x] change m_spd to m_transl for clarity
-- [%] use delta time as a point of reference for update phase
-- [%] teach the ship to shoot
+- [x] use delta time as a point of reference for update phase
+- [x] teach the ship to shoot
 - [ ] make something to shoot at
+- [ ] bullet to ship collision detection

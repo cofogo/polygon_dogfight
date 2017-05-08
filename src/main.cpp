@@ -200,7 +200,7 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                 continue;
             }
 
-            bullets[i]->update();
+            bullets[i]->update(dt);
         }
 
         if(show_fps) {

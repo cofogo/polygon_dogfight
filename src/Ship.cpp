@@ -5,8 +5,8 @@ Ship::Ship(Vec2 _pos)
 , m_trans(Vec2{0.0f, 0.0f})
 , m_rot(0)
 , m_turn_spd(6.0f)
-, m_accel(400.0f)
-, m_weapon1_vel(0.15f)
+, m_accel(200.0f)
+, m_weapon1_vel(200.0f)
 {
     m_shape.push_back(Vec2{0.0f, 15.0f});
     m_shape.push_back(Vec2{-10.0f, -10.0f});
@@ -70,7 +70,5 @@ Bullet* Ship::fire1()
 {
     //TODO add weapon cooldown timer
     //TODO use smart pointer
-    return new Bullet(m_pos,
-            m_trans.x + m_trans.y + m_weapon1_vel,
-            m_rot); //TODO add forward point position to pos
-}
+    //TODO add forward point position to pos 
+    return new Bullet(m_pos, m_trans, m_weapon1_vel, m_rot);}

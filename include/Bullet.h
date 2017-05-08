@@ -10,11 +10,11 @@ using utils::Vec2;
 
 class Bullet {
 public:
-    Bullet(Vec2 _pos, float _spd, float _dir);
+    Bullet(Vec2 _pos, Vec2 _parent_trans, float _spd, float _dir);
     ~Bullet() {}; 
 
     void render(SDL_Renderer* _ren);
-    void update();
+    void update(float _t);
     bool has_expired();
 private:
     Vec2 m_pos;

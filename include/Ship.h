@@ -4,6 +4,7 @@
 #include <vector>
 using std::vector;
 #include <cmath>
+using std::fabs;
 using std::sin;
 using std::cos;
 using std::pow;
