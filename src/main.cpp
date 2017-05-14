@@ -151,7 +151,9 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                         _ren,
                         SDL_Rect{5, 5});
 
-    Ship ship = Ship(Vec2{400.0f, 400.0f});
+    vector<Ship*> ships;
+    ships.push_back(new Ship(Vec2{500.0f, 400.0f}));
+    ships.push_back(new Ship(Vec2{100.0f, 400.0f}));
     //TODO clear bullets array from expired (NULL) objects
     vector<Bullet*> bullets;
     utils::Circle cir = utils::Circle {400, 300, 100};
@@ -179,23 +181,39 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                     if(pause) {pause = false;}
                     else {pause = true;}
                 }
+                //player0
                 if(key_states[SDL_SCANCODE_UP]) {
-                    bullets.push_back(ship.fire1());
+                    bullets.push_back(ships[0]->fire1());
+                }
+                //player1
+                if(key_states[SDL_SCANCODE_W]) {
+                    bullets.push_back(ships[1]->fire1());
                 }
             }
             else if(event.type == SDL_QUIT) {flag_quit = true;}
         }
         //continuous response key check
-        if(key_states[SDL_SCANCODE_DOWN]) {ship.accel(dt, 1.0f);}
-        if(key_states[SDL_SCANCODE_LEFT]) {ship.rotate(dt, -1.0f);}
-        if(key_states[SDL_SCANCODE_RIGHT]) {ship.rotate(dt, 1.0f);}
+                //player0
+        if(key_states[SDL_SCANCODE_DOWN]) {ships[0]->accel(dt, 1.0f);}
+        if(key_states[SDL_SCANCODE_LEFT]) {ships[0]->rotate(dt, -1.0f);}
+        if(key_states[SDL_SCANCODE_RIGHT]) {ships[0]->rotate(dt, 1.0f);}
+                //player1
+        if(key_states[SDL_SCANCODE_S]) {ships[1]->accel(dt, 1.0f);}
+        if(key_states[SDL_SCANCODE_A]) {ships[1]->rotate(dt, -1.0f);}
+        if(key_states[SDL_SCANCODE_D]) {ships[1]->rotate(dt, 1.0f);}
 
         if(pause) {SDL_Delay(tgt_frame_len); continue;}
 
-        ship.update(dt, scene_rect);
-        //get info for collision detection
-        Vec2 ship_pos = ship.get_pos();
-        unsigned ship_coll_r = ship.get_coll_rad();
+        for(unsigned i = 0; i < ships.size(); ++i) {
+            if(ships[i]->is_dead()) {
+                smart_del_vector(ships, i);
+                --i;
+                continue;
+            }
+            ships[i]->update(dt, scene_rect);
+        }
+
+        if(ships.size() == 0) { pause = true; continue;}
 
         for(unsigned i = 0; i < bullets.size(); ++i) {
             if(bullets[i]->has_expired()) {
@@ -205,10 +223,13 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
             }
 
             bullets[i]->update(dt);
-            if(detect_coll_pt_cir(bullets[i]->get_pos(),
-                    ship_pos, ship_coll_r)
-            ) {
-                pause = true;
+
+            for(unsigned j = 0; j < ships.size(); ++j) {
+                if(detect_coll_pt_cir(bullets[i]->get_pos(),
+                        ships[j]->get_pos(), ships[j]->get_coll_rad())
+                ) {
+                    ships[j]->take_dmg();
+                }
             }
         }
 
@@ -230,7 +251,9 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
             break;
         }
 
-        ship.render(_ren);
+        for(unsigned i = 0; i < ships.size(); ++i) {
+            ships[i]->render(_ren);
+        }
 
         for(unsigned i = 0; i < bullets.size(); ++i) {
             bullets[i]->render(_ren);
@@ -264,7 +287,6 @@ bool detect_coll_pt_cir(Vec2 _pos1, Vec2 _pos2, unsigned _r2)
     Vec2 dist_v = Vec2{fabs(_pos1.x - _pos2.x), fabs(_pos1.y - _pos2.y)};
     float dist = sqrtf(powf(dist_v.x, 2) + powf(dist_v.y, 2));
 
-    cerr << "dist: " << dist << endl;
     if(dist <= _r2) {
         return true;
     }

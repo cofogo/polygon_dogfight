@@ -28,7 +28,10 @@ public:
     //void fire2();
     Vec2 get_pos();
     unsigned get_coll_rad();
+    void take_dmg(int _amt = 1);
+    bool is_dead();
 private:
+    int m_hp;
 	vector<Vec2> m_shape;
 	Vec2 m_pos;
 	Vec2 m_trans;

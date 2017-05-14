@@ -12,5 +12,16 @@ v1.0
 - [x] change m_spd to m_transl for clarity
 - [x] use delta time as a point of reference for update phase
 - [x] teach the ship to shoot
-- [ ] make something to shoot at
-- [ ] bullet to ship collision detection
+- [x] bullet to ship collision detection
+- [x] make something to shoot at
+
+v1.0.1 (interrim)
+-----------------
+- [ ] use smart pointers
+- [ ] make proper update and reneder function(s) to reduce clutter and tangling
+- [ ] think of ways to improve tracking and handling of objects and interaction
+- [ ] think of ways to make input code more tidy and more sensible
+
+v1.1
+----
+- [ ] fill this list (see idea)

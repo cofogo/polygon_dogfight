@@ -1,7 +1,8 @@
 #include "Ship.h"
 
 Ship::Ship(Vec2 _pos)
-: m_pos(_pos)
+: m_hp(1)
+, m_pos(_pos)
 , m_trans(Vec2{0.0f, 0.0f})
 , m_rot(0)
 , m_turn_spd(6.0f)
@@ -78,3 +79,7 @@ Bullet* Ship::fire1()
 Vec2 Ship::get_pos() { return m_pos; }
 
 unsigned Ship::get_coll_rad() { return m_coll_radius; }
+
+void Ship::take_dmg(int _amt) { m_hp -= _amt; } // _dmg defaults to 1
+
+bool Ship::is_dead() { return m_hp <= 0; }
