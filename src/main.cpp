@@ -150,6 +150,11 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
                         SDL_Colour{0x30, 0x80, 0xf0, 0x00},
                         _ren,
                         SDL_Rect{5, 5});
+    Text_Object game_over("GAME OVER",
+                          TTF_OpenFont("assets/fonts/DejaVuSansMono.ttf", 20),
+                          SDL_Colour{0x30, 0x80, 0xf0, 0x00},
+                          _ren,
+                          SDL_Rect{0, 0});
 
     vector<Ship*> ships;
     ships.push_back(new Ship(Vec2{500.0f, 400.0f}));
@@ -246,6 +251,10 @@ void run_game(SDL_Renderer* _ren, const int _win_w, const int _win_h)
         SDL_RenderClear(_ren);
 
         if(show_fps) {fps_txt.render();}
+
+        if(ships.size() == 1) {
+            game_over.render_stretched();
+        }
 
         if(flag_quit == true) {
             break;
